@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Weather Demo</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <link rel="stylesheet" href="${request.static_url('weather:static/pylons.css')}" type="text/css" media="screen" charset="utf-8" />
+  <!--[if lte IE 6]>
+  <link rel="stylesheet" href="${request.static_url('weather:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
+  <![endif]-->
+</head>
+<body>
+  <div id="wrap">
+    <div id="top-small">
+      <div class="top-small align-center"><h1>Weather Demo</h1></div>
+    </div>
+    <div id="middle">
+      <div class="middle">
+        <form method="GET" action="${request.route_url('index')}">
+          <fieldset>
+            <legend>Settings</legend>
+            <label>Clouds
+              <select name="clouds">
+                <option tal:attributes="selected request.params.get('clouds') == 'none'">none</option>
+                <option tal:attributes="selected request.params.get('clouds') == 'light'">light</option>
+                <option tal:attributes="selected request.params.get('clouds') == 'medium'">medium</option>
+                <option tal:attributes="selected request.params.get('clouds') == 'heavy'">heavy</option>
+              </select>
+            </label>
+            <br />
+            <label><input type="checkbox" name="rain" tal:attributes="checked request.params.get('rain', False)" /> Rain</label>
+            <br />
+            <input type="submit" name="submit" value="Refresh" />
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div id="bottom">
+      <div class="bottom align-center">
+        <img src="${request.route_url('image', _query=image_query)}" width="640" />
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <div class="footer">A very simple demo of SVG animation with programmatic updates</div>
+  </div>
+</body>
+</html>
+
