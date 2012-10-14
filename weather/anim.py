@@ -8,15 +8,9 @@ from __future__ import (
 import os
 import copy
 try:
-    from xml.etree.cElementTree import (
-        fromstring,
-        tostring,
-        )
+    from xml.etree.cElementTree import fromstring, tostring
 except ImportError:
-    from xml.etree.ElementTree import (
-        fromstring,
-        tostring,
-        )
+    from xml.etree.ElementTree import fromstring, tostring
 
 from weather.svg import (
     SVG_XMLNS,

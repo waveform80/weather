@@ -26,13 +26,11 @@ def hex_to_rgb(s):
 
 def element_by_id(root, tag, id):
     "Find the tag element with id under root"
-    try:
-        return [
-            elem for elem in root.getiterator(tag)
-            if elem.attrib.get('id') == id][0]
-    except IndexError:
-        return ValueError(
-            'Unable to locate a %s element with id %s under root' % (tag, id))
+    for elem in root.getiterator(tag):
+        if elem.attrib.get('id') == id:
+            return elem
+    raise ValueError(
+        'Unable to locate a %s element with id %s under root' % (tag, id))
 
 def style_to_dict(style):
     "Construct a dictionary from an SVG style attribute"
@@ -84,7 +82,7 @@ class Scale(Transformation):
             self.y = float(y)
 
     def inverse(self):
-        return Translate(1.0 / self.x, 1.0 / self.y)
+        return Scale(1.0 / self.x, 1.0 / self.y)
 
     def __str__(self):
         return 'scale(%f,%f)' % (self.x, self.y)
