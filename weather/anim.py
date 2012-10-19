@@ -16,14 +16,13 @@ from weather.svg import (
     SVG_XMLNS,
     SVG_ENCODING,
     element_by_id,
-    style_to_dict,
-    dict_to_style,
     )
 
 # The SVG template doesn't change and is quite large (300k or so), hence we
 # read the whole thing once on module initialization and just copy it as
 # required
-SVG_TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), 'templates', 'image.svg')
+SVG_TEMPLATE_PATH = os.path.join(
+    os.path.dirname(__file__), 'templates', 'image_optimized.svg')
 with open(SVG_TEMPLATE_PATH, 'r') as f:
     SVG_TEMPLATE_IMAGE = fromstring(f.read())
 
@@ -44,37 +43,31 @@ class WeatherAnimation(object):
 
     def _get_clouds(self):
         for level in ('heavy', 'medium', 'light'):
-            style = style_to_dict(self._clouds[level].attrib.get('style', ''))
-            if style.get('display', '') != 'none':
+            if self._clouds[level].attrib.get('display', '') != 'none':
                 return level
         return 'none'
 
     def _set_clouds(self, value):
         for name, elem in self._clouds.items():
-            style = style_to_dict(elem.attrib.get('style', ''))
             if name == value:
-                if 'display' in style:
-                    del style['display']
+                if 'display' in elem.attrib:
+                    del elem.attrib['display']
             else:
-                style['display'] = 'none'
-            elem.attrib['style'] = dict_to_style(style)
+                elem.attrib['display'] = 'none'
 
     clouds = property(
         _get_clouds, _set_clouds, doc="string property represents cloud level "
             "as 'none', 'light', 'medium', or 'heavy'""")
 
     def _get_rain(self):
-        style = style_to_dict(self._rain.attrib.get('style', ''))
-        return style.get('display', '') != 'none'
+        return self._rain.attrib.get('display', '') != 'none'
 
     def _set_rain(self, value):
-        style = style_to_dict(self._rain.attrib.get('style', ''))
         if value:
-            if 'display' in style:
-                del style['display']
+            if 'display' in self._rain.attrib:
+                del self._rain.attrib['display']
         else:
-            style['display'] = 'none'
-        self._rain.attrib['style'] = dict_to_style(style)
+            self._rain.attrib['display'] = 'none'
 
     rain = property(
         _get_rain, _set_rain, doc="boolean property which enables or disables "

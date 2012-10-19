@@ -34,7 +34,7 @@ def element_by_id(root, tag, id):
 
 def style_to_dict(style):
     "Construct a dictionary from an SVG style attribute"
-    return dict(s.split(':', 1) for s in style.split(';'))
+    return dict(s.split(':', 1) for s in style.split(';') if s)
 
 def dict_to_style(style):
     "Consrtuct an SVG style attribute from a dictionary"
