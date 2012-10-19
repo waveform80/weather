@@ -49,14 +49,12 @@ ENTRY_POINTS = """\
     """
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(HERE, 'README.txt')).read()
-CHANGES = open(os.path.join(HERE, 'CHANGES.txt')).read()
 
 setup(
     name                 = 'weather',
     version              = get_version(os.path.join(HERE, 'weather', '__init__.py')),
     description          = 'A web-based weather related education suite',
-    long_description     = README + '\n\n' + CHANGES,
+    long_description     = description(os.path.join(HERE, 'README.rst')),
     classifiers          = CLASSIFIERS,
     author               = 'Dave Hughes',
     author_email         = 'dave@waveform.org.uk',
