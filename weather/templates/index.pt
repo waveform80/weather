@@ -43,7 +43,7 @@
     </div>
   </div>
   <div id="footer">
-    <div class="footer">A very simple demo of SVG animation with programmatic updates</div>
+    <div class="footer">A very simple demo of SVG animation with programmatic updates. <a href="https://github.com/waveform80/weather">Source code</a> is available from GitHub</div>
   </div>
 </body>
 </html>

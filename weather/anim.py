@@ -20,15 +20,20 @@ from weather.svg import (
     dict_to_style,
     )
 
+# The SVG template doesn't change and is quite large (300k or so), hence we
+# read the whole thing once on module initialization and just copy it as
+# required
+SVG_TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), 'templates', 'image.svg')
+with open(SVG_TEMPLATE_PATH, 'r') as f:
+    SVG_TEMPLATE_IMAGE = fromstring(f.read())
+
 
 class WeatherAnimation(object):
+    """A class representing the SVG animation."""
 
-    def __init__(self, source=None):
+    def __init__(self):
         super(WeatherAnimation, self).__init__()
-        if source is None:
-            source = os.path.join(os.path.dirname(__file__), 'templates', 'image.svg')
-        with open(source, 'r') as f:
-            self._doc = fromstring(f.read())
+        self._doc = copy.deepcopy(SVG_TEMPLATE_IMAGE)
         self._layer = element_by_id(self._doc, '{%s}g' % SVG_XMLNS, 'layer1')
         self._clouds = {
             'light':  element_by_id(self._doc, '{%s}path' % SVG_XMLNS, 'cloud-light'),
@@ -54,7 +59,9 @@ class WeatherAnimation(object):
                 style['display'] = 'none'
             elem.attrib['style'] = dict_to_style(style)
 
-    clouds = property(_get_clouds, _set_clouds)
+    clouds = property(
+        _get_clouds, _set_clouds, doc="string property represents cloud level "
+            "as 'none', 'light', 'medium', or 'heavy'""")
 
     def _get_rain(self):
         style = style_to_dict(self._rain.attrib.get('style', ''))
@@ -69,7 +76,9 @@ class WeatherAnimation(object):
             style['display'] = 'none'
         self._rain.attrib['style'] = dict_to_style(style)
 
-    rain = property(_get_rain, _set_rain)
+    rain = property(
+        _get_rain, _set_rain, doc="boolean property which enables or disables "
+            "animated rain")
 
     def __str__(self):
         return tostring(self._doc, encoding=SVG_ENCODING)
