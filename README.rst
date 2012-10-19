@@ -102,7 +102,7 @@ necessary)::
 
     WSGIApplicationGroup %{GLOBAL}
     WSGIPassAuthorization On
-    WSGIDaemonProcess weather user=dave group=dave threads=4 python-path=/path/to/weatherenv/lib/python2.7/site-packages
+    WSGIDaemonProcess weather user=myuser group=mygroup threads=4 python-path=/path/to/weatherenv/lib/python2.7/site-packages
     WSGIScriptAlias /weather /path/to/weatherenv/weather.wsgi
     <Directory /path/to/weatherenv>
         WSGIProcessGroup weather
