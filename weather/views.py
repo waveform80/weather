@@ -28,5 +28,6 @@ def image_svg(request):
     response.content_type = 'image/svg+xml'.encode('ascii')
     response.charset = SVG_ENCODING.encode('ascii')
     response.body = str(anim)
-    response.encode_content('gzip')
+    if 'gzip' in request.accept_encoding:
+        response.encode_content('gzip')
     return response
